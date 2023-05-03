@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hometodoor_chef/authentication/login.dart';
-import 'package:hometodoor_chef/authentication/signup.dart';
+import 'package:hometodoor_user/authentication/signup.dart';
+
+import 'login.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class _AuthScreenState extends State<AuthScreen> {
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Color(0xffff99c8),
+                    Color(0xff2ec4b6),
                     Color(0xff023e8a),
                   ],
                   begin: const FractionalOffset(0.0, 0.0),
@@ -63,8 +64,8 @@ class _AuthScreenState extends State<AuthScreen> {
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
                 colors: [
-                    Color(0xffff99c8),
-                    Color(0xff023e8a),
+                    Color(0xffcce3de),
+                    Color(0xffcce3de),
                   ]
               ),
             ),

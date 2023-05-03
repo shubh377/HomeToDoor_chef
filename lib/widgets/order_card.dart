@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hometodoor_user/mainScreens/order_details_screen.dart';
 
-import '../mainScreens/order_details_screen.dart';
-import '../model/items.dart';
-
-
+import '../models/items.dart';
 
 class OrderCard extends StatelessWidget {
 
@@ -30,7 +28,7 @@ class OrderCard extends StatelessWidget {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Colors.black12,
+              Color(0xffcbf3f0),
               Colors.black12
             ],
             begin: const FractionalOffset(0.0, 0.0),
@@ -80,6 +78,7 @@ Widget placedOrderDesignWidget(Items model, BuildContext context, seperateQuanti
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 16,
+                        fontWeight: FontWeight.bold
 
                       ),
                     ),
@@ -89,16 +88,19 @@ Widget placedOrderDesignWidget(Items model, BuildContext context, seperateQuanti
                     "₹" ,
                     style: TextStyle(
                       color: Colors.blue,
-                      fontSize: 16
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold
                     ),
                   ),
                   Text(
                     model.price.toString(),
                     style: TextStyle(
                       fontSize: 18,
+                      fontWeight: FontWeight.bold,
                       color: Colors.blue
                     ),
-                  )
+                  ),
+                  SizedBox(width: 7,)
                 ],
               ),
               SizedBox(height: 20,),
@@ -108,7 +110,8 @@ Widget placedOrderDesignWidget(Items model, BuildContext context, seperateQuanti
                     "x ",
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 14
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold
                     ),
                   ),
                   Expanded(
@@ -117,6 +120,7 @@ Widget placedOrderDesignWidget(Items model, BuildContext context, seperateQuanti
                       style: TextStyle(
                         color: Colors.black54,
                         fontSize: 25,
+                        fontWeight: FontWeight.bold
 
                       ),
                     ),

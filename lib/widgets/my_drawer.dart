@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:hometodoor_chef/global/global.dart';
-import 'package:hometodoor_chef/mainScreens/earnings_screen.dart';
-import 'package:hometodoor_chef/mainScreens/history_screen.dart';
-import 'package:hometodoor_chef/mainScreens/new_orders_screen.dart';
+import 'package:hometodoor_user/global/global.dart';
+import 'package:hometodoor_user/mainScreens/address_screen.dart';
+import 'package:hometodoor_user/mainScreens/history_screen.dart';
+import 'package:hometodoor_user/mainScreens/home_screen.dart';
+import 'package:hometodoor_user/mainScreens/my_orders_screen.dart';
+import 'package:hometodoor_user/mainScreens/search_screen.dart';
 
 import '../authentication/auth_screen.dart';
-import '../mainScreens/home_screen.dart';
 
 class MyDrawer extends StatelessWidget {
 
@@ -41,7 +42,7 @@ class MyDrawer extends StatelessWidget {
                   sharedPreferences!.getString("name")!,
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 20.0,
+                    fontSize: 30.0,
                     fontFamily:"Signatra",
                   ),
                 )
@@ -62,7 +63,7 @@ class MyDrawer extends StatelessWidget {
                 ListTile(
                   leading: Icon(
                     Icons.home,
-                    color: Colors.black,
+                    color: Color(0xff087e8b),
                   ),
                   title: Text(
                     "Home",
@@ -71,59 +72,73 @@ class MyDrawer extends StatelessWidget {
                     ),
                   ),
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (c)=>HomeScreen()));
-                  },
-                ),
-
-                ListTile(
-                  leading: Icon(
-                    Icons.money,
-                    color: Colors.black,
-                  ),
-                  title: Text(
-                    "My Earnings",
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (c)=>EarningsScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (c) => HomeScreen()));
                   },
                 ),
                 ListTile(
                   leading: Icon(
                     Icons.reorder,
-                    color: Colors.black,
+                    color: Color(0xff087e8b),
                   ),
                   title: Text(
-                    "New Orders",
+                    "My Orders",
                     style: TextStyle(
                       color: Colors.black,
                     ),
                   ),
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (c)=>NewOrdersScreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (c) => MyOrdersScreen()));
                   },
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.local_shipping,
-                    color: Colors.black,
+                    Icons.history,
+                    color: Color(0xff087e8b),
                   ),
                   title: Text(
-                    "History-Orders",
+                    "History",
                     style: TextStyle(
                       color: Colors.black,
                     ),
                   ),
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (c)=>HistoryScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (c) => HistoryScreen()));
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.search,
+                    color: Color(0xff087e8b),
+                  ),
+                  title: Text(
+                    "Search",
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (c) => SearchScreen()));
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.location_city,
+                    color: Color(0xff087e8b),
+                  ),
+                  title: Text(
+                    "Add new address",
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (c) => AddressScreen()));
                   },
                 ),
                 ListTile(
                   leading: Icon(
                     Icons.logout,
-                    color: Colors.black,
+                    color: Color(0xff087e8b),
                   ),
                   title: Text(
                     "Logout",

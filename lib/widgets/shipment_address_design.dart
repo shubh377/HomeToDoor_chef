@@ -1,22 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-
-import '../global/global.dart';
-
-import '../model/address.dart';
+import '../models/address.dart';
 import '../splashScreen/splash_screen.dart';
 
 
 class ShipmentAddressDesign extends StatelessWidget
 {
   final Address? model;
-  final String? orderStatus;
-  final String? orderId;
-  final String? sellerId;
-  final String? orderByUser;
 
-  ShipmentAddressDesign({this.model, this.orderStatus, this.orderId, this.sellerId, this.orderByUser});
+  ShipmentAddressDesign({this.model});
+
 
 
   @override
@@ -29,7 +22,7 @@ class ShipmentAddressDesign extends StatelessWidget
           padding: EdgeInsets.all(10.0),
           child: Text(
               'Shipping Details:',
-              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
+              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)
           ),
         ),
         const SizedBox(
@@ -44,18 +37,18 @@ class ShipmentAddressDesign extends StatelessWidget
                 children: [
                   const Text(
                     "Name",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.black, fontSize: 17),
                   ),
-                  Text(model!.name!),
+                  Text(model!.name!, style: TextStyle(fontSize: 17),),
                 ],
               ),
               TableRow(
                 children: [
                   const Text(
                     "Phone",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.black, fontSize: 17),
                   ),
-                  Text(model!.phoneNumber!),
+                  Text(model!.phoneNumber!, style: TextStyle(fontSize: 17)),
                 ],
               ),
             ],
@@ -64,14 +57,18 @@ class ShipmentAddressDesign extends StatelessWidget
         const SizedBox(
           height: 20,
         ),
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Text(
-            model!.fullAddress!,
-            textAlign: TextAlign.justify,
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Text(
+              model!.fullAddress!,
+             style: TextStyle(
+               fontSize: 17
+             ),
+            ),
           ),
         ),
-
+        SizedBox(height: 28,),
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: Center(
@@ -84,8 +81,8 @@ class ShipmentAddressDesign extends StatelessWidget
                 decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        Colors.cyan,
-                        Colors.amber,
+                        Color(0xffd8e2dc),
+                        Color(0xffd8e2dc),
                       ],
                       begin:  FractionalOffset(0.0, 0.0),
                       end:  FractionalOffset(1.0, 0.0),
@@ -93,12 +90,12 @@ class ShipmentAddressDesign extends StatelessWidget
                       tileMode: TileMode.clamp,
                     )
                 ),
-                width: MediaQuery.of(context).size.width - 40,
+                width: MediaQuery.of(context).size.width - 90,
                 height: 50,
-                child: Center(
+                child: const Center(
                   child: Text(
-                    orderStatus=="ended" ? "Go Back" : "Order packing done",
-                    style: TextStyle(color: Colors.white, fontSize: 15.0),
+                    "Go Back",
+                    style: TextStyle(color: Colors.black, fontSize: 15.0, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),

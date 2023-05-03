@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-import '../assistantMethods/assistant_methods.dart';
-import '../global/global.dart';
-import '../widgets/order_card.dart';
-import '../widgets/progress_bar.dart';
-import '../widgets/simple_app_bar.dart';
-
+import 'package:hometodoor_user/assistantMethods/assistant_methods.dart';
+import 'package:hometodoor_user/global/global.dart';
+import 'package:hometodoor_user/widgets/order_card.dart';
+import 'package:hometodoor_user/widgets/progress_bar.dart';
+import 'package:hometodoor_user/widgets/simple_app_bar.dart';
 
 class HistoryScreen extends StatefulWidget {
 
@@ -24,11 +22,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
           appBar: SimpleAppBar(title: "History",),
           body: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
-                .collection("orders")
-                .where("chefUID", isEqualTo: sharedPreferences!.getString("uid"))
-                .where("status", isEqualTo: "ended")
-            .orderBy("orderTime" , descending: true)
-                .snapshots(),
+                .collection("users").doc(sharedPreferences!.getString("uid"))
+                .collection("orders").where("status", isEqualTo: "ended")
+                .orderBy("orderTime", descending: true).snapshots(),
             builder: (c, snapshot){
               return snapshot.hasData
                   ? ListView.builder(
@@ -38,7 +34,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     future: FirebaseFirestore.instance
                         .collection("items")
                         .where("itemID", whereIn: seperateOrderItemIDs((snapshot.data!.docs[index].data()! as Map<String, dynamic>) ["productIDs"]))
-                        .where("chefUID", isEqualTo: sharedPreferences!.getString("uid"))
+                        .where("orderBy", whereIn: (snapshot.data!.docs[index].data()! as Map<String, dynamic>)["uid"])
                         .orderBy("publishedDate", descending: true).get(),
                     builder: (c, snap){
                       return snap.hasData

@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:hometodoor_user/mainScreens/item_detail_screen.dart';
+import 'package:hometodoor_user/mainScreens/items_screen.dart';
 
 import '../models/chefs.dart';
-import '../models/items.dart';
+import '../models/menus.dart';
 
-class ItemsDesignWidget extends StatefulWidget {
+class MenusDesignWidget extends StatefulWidget {
 
 
-  Items? model;
+  Menus? model;
   BuildContext? context;
 
-  ItemsDesignWidget({this.model, this.context});
+  MenusDesignWidget({this.model, this.context});
 
   @override
-  State<ItemsDesignWidget> createState() => _ItemsDesignWidgetState();
+  State<MenusDesignWidget> createState() => _MenusDesignWidgetState();
 }
 
-class _ItemsDesignWidgetState extends State<ItemsDesignWidget> {
+class _MenusDesignWidgetState extends State<MenusDesignWidget> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (c) => ItemDetailsScreen(model: widget.model)));
+        Navigator.push(context, MaterialPageRoute(builder: (c) => ItemsScreen(model: widget.model)));
       },
       splashColor: Colors.red,
       child: Padding(
         padding: EdgeInsets.all(16.0),
         child: Container(
-          height: 295,
+          height: 252,
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: [
@@ -44,20 +44,17 @@ class _ItemsDesignWidgetState extends State<ItemsDesignWidget> {
               SizedBox(height: 8.0,
               ),
               Text(
-                widget.model!.title!,
-                style: TextStyle(color: Colors.blueGrey,
+                widget.model!.menuTitle!,
+                style: TextStyle(color: Colors.black,
                     fontSize: 20,
-                    fontWeight: FontWeight.bold,
                     fontFamily: "Varela"),
               ),
-              SizedBox(height: 5.0,
-              ),
-              Text(
-                widget.model!.info!,
-                style: TextStyle(color: Colors.blueGrey,
-                    fontSize: 15,
-                    fontFamily: "Varela"),
-              ),
+              // Text(
+              //   widget.model!.menuInfo!,
+              //   style: TextStyle(color: Colors.black,
+              //       fontSize: 15,
+              //       fontFamily: "Varela"),
+              // ),
 
 
             ],

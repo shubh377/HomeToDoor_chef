@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hometodoor_chef/authentication/auth_screen.dart';
-import 'package:hometodoor_chef/global/global.dart';
-import 'package:hometodoor_chef/mainScreens/home_screen.dart';
-import 'package:hometodoor_chef/widgets/custom_text_field.dart';
-import 'package:hometodoor_chef/widgets/error_dialog.dart';
 
+import '../global/global.dart';
+import '../mainScreens/home_screen.dart';
+import '../widgets/custom_text_field.dart';
+import '../widgets/error_dialog.dart';
 import '../widgets/loading_dialog.dart';
+import 'auth_screen.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -70,13 +71,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future readDataAndSetDataLocally(User currentUser) async{
 
-    await FirebaseFirestore.instance.collection("chefs").doc(currentUser.uid).get().then((snapshot) async{
+    await FirebaseFirestore.instance.collection("users").doc(currentUser.uid).get().then((snapshot) async{
 
       if(snapshot.exists){
         await sharedPreferences!.setString("uid", currentUser.uid);
-        await sharedPreferences!.setString("email", snapshot.data()!["chefEmail"]);
-        await sharedPreferences!.setString("name", snapshot.data()!["chefName"]);
-        await sharedPreferences!.setString("photoUrl", snapshot.data()!["chefAvatarUrl"]);
+        await sharedPreferences!.setString("email", snapshot.data()!["userEmail"]);
+        await sharedPreferences!.setString("name", snapshot.data()!["userName"]);
+        await sharedPreferences!.setString("photoUrl", snapshot.data()!["userPhotoUrl"]);
+
+        List<String> userCartList = snapshot.data()!["userCart"].cast<String>();
+        await sharedPreferences!.setStringList("userCart", userCartList);
 
         Navigator.pop(context);
         Navigator.push(context, MaterialPageRoute(builder: (c)=>HomeScreen()));
@@ -110,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
             alignment: Alignment.center,
             child: Padding(
               padding: EdgeInsets.all(15),
-              child: Image.asset("images/seller.png",
+              child: Image.asset("images/welcome.png",
                 height: 270,),
             ),
           ),
@@ -143,12 +147,12 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Text(
               "Login",
               style: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
             style: ElevatedButton.styleFrom(
-              primary: Color(0xffffcad4),
+              primary: Color(0xff2ec4b6),
             ),
 
           ),

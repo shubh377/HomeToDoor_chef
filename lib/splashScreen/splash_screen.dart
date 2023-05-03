@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:hometodoor_chef/authentication/auth_screen.dart';
-import 'package:hometodoor_chef/global/global.dart';
 
+import '../authentication/auth_screen.dart';
+import '../global/global.dart';
 import '../mainScreens/home_screen.dart';
 
 class MySplashScreen extends StatefulWidget {
@@ -19,15 +19,14 @@ class _MySplashScreenState extends State<MySplashScreen> {
   {
 
 
-    Timer(const Duration(seconds: 5), () async {
+    Timer(const Duration(seconds: 4), () async {
       //if chef is already logged in
       if(firebaseAuth.currentUser != null){
-        Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
-
+         Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
       }
       //if seller is not already logged in
       else{
-        Navigator.push(context, MaterialPageRoute(builder: (c)=> const AuthScreen()));
+         Navigator.push(context, MaterialPageRoute(builder: (c)=> const AuthScreen()));
       }
     });
 
