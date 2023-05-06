@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hometodoor_user/mainScreens/item_detail_screen.dart';
+import 'package:hometodoor_chef/mainScreens/itemScreen.dart';
+import 'package:hometodoor_chef/mainScreens/item_detail_screen.dart';
 
-import '../models/chefs.dart';
-import '../models/items.dart';
+import '../model/items.dart';
+import '../model/menus.dart';
+
 
 class ItemsDesignWidget extends StatefulWidget {
 
@@ -23,7 +25,7 @@ class _ItemsDesignWidgetState extends State<ItemsDesignWidget> {
       onTap: (){
         Navigator.push(context, MaterialPageRoute(builder: (c) => ItemDetailsScreen(model: widget.model)));
       },
-      splashColor: Colors.red,
+      splashColor: Color(0xffcbf3f0),
       child: Padding(
         padding: EdgeInsets.all(16.0),
         child: Container(
@@ -36,28 +38,28 @@ class _ItemsDesignWidgetState extends State<ItemsDesignWidget> {
                 thickness: 3,
                 color: Colors.blueGrey[50],
               ),
-              Image.network(
-                widget.model!.thumbnailUrl!,
-                height: 210.0,
-                fit: BoxFit.cover,
-              ),
-              SizedBox(height: 8.0,
-              ),
+              SizedBox(height: 10,),
               Text(
                 widget.model!.title!,
                 style: TextStyle(color: Colors.blueGrey,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: "Varela"),
+                    fontSize: 22,
+                  fontWeight: FontWeight.bold
+                    ),
               ),
-              SizedBox(height: 5.0,
+              SizedBox(height: 5,),
+              Image.network(
+                widget.model!.thumbnailUrl!,
+                height: 250.0,
+                fit: BoxFit.fitWidth,
               ),
-              Text(
-                widget.model!.info!,
-                style: TextStyle(color: Colors.blueGrey,
-                    fontSize: 15,
-                    fontFamily: "Varela"),
-              ),
+              //SizedBox(height: 3.0,),
+              // Text(
+              //   widget.model!.info!,
+              //   style: TextStyle(color: Colors.blueGrey,
+              //       fontSize: 17,
+              //     fontWeight: FontWeight.bold
+              //      ),
+              // ),
 
 
             ],

@@ -24,8 +24,8 @@ class StatusBanner extends StatelessWidget
       decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xff2ec4b6),
-              Color(0xff2ec4b6),
+              Colors.cyan,
+              Colors.amber,
             ],
             begin:  FractionalOffset(0.0, 0.0),
             end:  FractionalOffset(1.0, 0.0),
@@ -33,7 +33,7 @@ class StatusBanner extends StatelessWidget
             tileMode: TileMode.clamp,
           )
       ),
-      height: 70,
+      height: 40,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -54,14 +54,14 @@ class StatusBanner extends StatelessWidget
             orderStatus == "ended"
                 ? "Parcel Delivered $message"
                 : "Order Placed $message",
-            style: const TextStyle(color: Colors.white, fontSize: 20),
+            style: const TextStyle(color: Colors.white),
           ),
           const SizedBox(
             width: 5,
           ),
           CircleAvatar(
-            radius: 11,
-            backgroundColor: Color(0xff087e8b),
+            radius: 8,
+            backgroundColor: Colors.grey,
             child: Center(
               child: Icon(
                 iconData,

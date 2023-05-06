@@ -33,6 +33,7 @@ class TextWidgetHeader extends SliverPersistentHeaderDelegate {
             style: TextStyle(
               fontFamily: "Lobster-Regular",
               fontSize: 22,
+
             ),
           ),
 

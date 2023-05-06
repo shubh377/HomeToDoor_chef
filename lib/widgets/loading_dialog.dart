@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'progress_bar.dart';
-
+import 'package:hometodoor_chef/widgets/progress_bar.dart';
 
 class LoadingDialog extends StatelessWidget
 {

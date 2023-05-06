@@ -5,15 +5,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:hometodoor_chef/mainScreens/home_screen.dart';
+import 'package:hometodoor_chef/widgets/custom_text_field.dart';
+import 'package:hometodoor_chef/widgets/error_dialog.dart';
+import 'package:hometodoor_chef/widgets/loading_dialog.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as fStorage;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../global/global.dart';
-import '../mainScreens/home_screen.dart';
-import '../widgets/custom_text_field.dart';
-import '../widgets/error_dialog.dart';
-import '../widgets/loading_dialog.dart';
 
 
 class SignupScreen extends StatefulWidget {
@@ -29,11 +29,15 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController passwordController=TextEditingController();
   TextEditingController emailController=TextEditingController();
   TextEditingController confirmPasswordController=TextEditingController();
+  TextEditingController phoneController=TextEditingController();
+  TextEditingController locationController=TextEditingController();
   XFile? imageXFile;
   final ImagePicker _picker=ImagePicker();
 
-
+  Position? position;
+  List<Placemark>? placeMarks;
   String chefImageURL="";
+  String completeAddress="";
 
   Future<void> _getImage() async{
     imageXFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -42,6 +46,21 @@ class _SignupScreenState extends State<SignupScreen> {
     });
   }
 
+  getCurrentLocation () async{
+    Position newPosition = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+    position=newPosition;
+    placeMarks = await placemarkFromCoordinates(
+      position!.latitude, position!.longitude,
+    );
+
+    Placemark pMark = placeMarks![0];
+
+    String completeAddress = '${pMark.subThoroughfare} ${pMark.thoroughfare}, ${pMark.subLocality} ${pMark.locality}, ${pMark.subAdministrativeArea}, ${pMark.administrativeArea} ${pMark.postalCode}, ${pMark.country}';
+    locationController.text=completeAddress;
+
+  }
 
   Future<void> formValidation() async{
     if (imageXFile==null){
@@ -57,7 +76,7 @@ class _SignupScreenState extends State<SignupScreen> {
     else{
       if(confirmPasswordController.text == passwordController.text){
 
-        if(confirmPasswordController.text.isNotEmpty && emailController.text.isNotEmpty && nameController.text.isNotEmpty ){
+        if(confirmPasswordController.text.isNotEmpty && emailController.text.isNotEmpty && phoneController.text.isNotEmpty && locationController.text.isNotEmpty && nameController.text.isNotEmpty ){
           showDialog(
               context: context,
               builder: (c){
@@ -68,7 +87,7 @@ class _SignupScreenState extends State<SignupScreen> {
           );
 
           String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-          fStorage.Reference reference = fStorage.FirebaseStorage.instance.ref().child("users").child(fileName);
+          fStorage.Reference reference = fStorage.FirebaseStorage.instance.ref().child("chefs").child(fileName);
           fStorage.UploadTask uploadTask = reference.putFile(File(imageXFile!.path));
           fStorage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
           await taskSnapshot.ref.getDownloadURL().then((url) {
@@ -107,14 +126,17 @@ class _SignupScreenState extends State<SignupScreen> {
 
 
   Future saveDataToFirestore(User currentUser) async{
-    FirebaseFirestore.instance.collection("users").doc(currentUser.uid).set({
-      "userUid": currentUser.uid,
-      "userEmail": currentUser.email,
-      "userName": nameController.text.trim(),
-      "userPhotoUrl": chefImageURL,
+    FirebaseFirestore.instance.collection("chefs").doc(currentUser.uid).set({
+      "chefUid": currentUser.uid,
+      "chefEmail": currentUser.email,
+      "chefName": nameController.text.trim(),
+      "chefAvatarUrl": chefImageURL,
+      "chefPhone": phoneController.text.trim(),
+      "address": completeAddress,
       "status": "approved",
-      "userCart": ['garbageValue'],
-
+      "earnings": 0.0,
+      "lat": position!.latitude,
+      "lng": position!.longitude,
     });
 
 
@@ -125,7 +147,6 @@ class _SignupScreenState extends State<SignupScreen> {
     await sharedPreferences!.setString("email", currentUser.email.toString());
     await sharedPreferences!.setString("name", nameController.text.trim());
     await sharedPreferences!.setString("photoUrl", chefImageURL);
-    await sharedPreferences!.setStringList("userCart", ['garbageValue']);
   }
   void authenticateChefAndSignup() async {
     User? currentUser;
@@ -214,6 +235,46 @@ class _SignupScreenState extends State<SignupScreen> {
                       hintText: "Confirm Password",
                       isObsecre: true,
 
+                    ),
+                    CustomTextField(
+                      data: Icons.phone,
+                      controller: phoneController,
+                      hintText: "Phone Number",
+                      isObsecre: false,
+
+                    ),
+                    CustomTextField(
+                      data: Icons.my_location,
+                      controller: locationController,
+                      hintText: "Chef's Address",
+                      isObsecre: false,
+                      enabled: true,
+
+                    ),
+                    Container(
+                      width: 400,
+                      height: 40,
+                      alignment: Alignment.center,
+                      child: TextButton.icon(
+                          onPressed: (){
+                            getCurrentLocation();
+                          },
+                          label: Text(
+                            "Use my current location",
+                            style: TextStyle(
+                              color: Color(0xff006d77),
+                              fontSize: 15,
+                            ),
+                          ),
+                        icon: const Icon(
+                          Icons.location_on,
+                          color: Color(0xff073b4c),
+                        ),
+                        style: TextButton.styleFrom(
+                          primary: Colors.white54,
+
+                        ),
+                      ),
                     ),
                   ],
                 ),

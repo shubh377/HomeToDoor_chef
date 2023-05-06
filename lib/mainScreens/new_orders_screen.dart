@@ -1,30 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:hometodoor_user/assistantMethods/assistant_methods.dart';
-import 'package:hometodoor_user/global/global.dart';
-import 'package:hometodoor_user/widgets/order_card.dart';
-import 'package:hometodoor_user/widgets/progress_bar.dart';
-import 'package:hometodoor_user/widgets/simple_app_bar.dart';
+import 'package:hometodoor_chef/global/global.dart';
 
-class MyOrdersScreen extends StatefulWidget {
+
+import '../assistantMethods/assistant_methods.dart';
+import '../widgets/order_card.dart';
+import '../widgets/progress_bar.dart';
+import '../widgets/simple_app_bar.dart';
+
+
+class NewOrdersScreen extends StatefulWidget {
 
 
   @override
-  State<MyOrdersScreen> createState() => _MyOrdersScreenState();
+  State<NewOrdersScreen> createState() => _NewOrdersScreenState();
 }
 
-class _MyOrdersScreenState extends State<MyOrdersScreen> {
+class _NewOrdersScreenState extends State<NewOrdersScreen> {
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-          appBar: SimpleAppBar(title: "My Orders",),
+          appBar: SimpleAppBar(title: "New Orders",),
           body: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
-            .collection("users").doc(sharedPreferences!.getString("uid"))
-            .collection("orders").where("status", isEqualTo: "normal")
-            .orderBy("orderTime", descending: true).snapshots(),
+                .collection("orders").where("status", isEqualTo: "normal")
+            .where("chefUID", isEqualTo: sharedPreferences!.getString("uid"))
+                .snapshots(),
             builder: (c, snapshot){
               return snapshot.hasData 
                   ? ListView.builder(
@@ -34,7 +37,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                     future: FirebaseFirestore.instance
                     .collection("items")
                     .where("itemID", whereIn: seperateOrderItemIDs((snapshot.data!.docs[index].data()! as Map<String, dynamic>) ["productIDs"]))
-                    .where("orderBy", whereIn: (snapshot.data!.docs[index].data()! as Map<String, dynamic>)["uid"])
+                    .where("chefUID", whereIn: (snapshot.data!.docs[index].data()! as Map<String, dynamic>)["uid"])
                     .orderBy("publishedDate", descending: true).get(),
                     builder: (c, snap){
                       return snap.hasData

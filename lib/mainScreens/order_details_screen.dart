@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../global/global.dart';
-import '../models/address.dart';
+
+import '../model/address.dart';
 import '../widgets/progress_bar.dart';
 import '../widgets/shipment_address_design.dart';
 import '../widgets/status_banner.dart';
+
 
 
 class OrderDetailsScreen extends StatefulWidget
@@ -27,6 +29,28 @@ class OrderDetailsScreen extends StatefulWidget
 class _OrderDetailsScreenState extends State<OrderDetailsScreen>
 {
   String orderStatus = "";
+  String orderByUser = "";
+  String sellerId = "";
+
+  getOrderInfo()
+  {
+    FirebaseFirestore.instance
+        .collection("orders")
+        .doc(widget.orderID).get().then((DocumentSnapshot)
+    {
+      orderStatus = DocumentSnapshot.data()!["status"].toString();
+      orderByUser = DocumentSnapshot.data()!["orderBy"].toString();
+      sellerId = DocumentSnapshot.data()!["chefUID"].toString();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    getOrderInfo();
+  }
+
 
   @override
   Widget build(BuildContext context)
@@ -35,8 +59,6 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
       body: SingleChildScrollView(
         child: FutureBuilder<DocumentSnapshot>(
           future: FirebaseFirestore.instance
-              .collection("users")
-              .doc(sharedPreferences!.getString("uid"))
               .collection("orders")
               .doc(widget.orderID)
               .get(),
@@ -85,18 +107,18 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                             "Order on: " +
                                 DateFormat("dd MMMM, yyyy - hh:mm aa")
                                     .format(DateTime.fromMillisecondsSinceEpoch(int.parse(dataMap["orderTime"]))),
-                            style: const TextStyle(fontSize: 16, color: Colors.grey, fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontSize: 16, color: Colors.grey),
                           ),
                         ),
                         const Divider(thickness: 1,),
-                        orderStatus == "ended"
-                            ? Image.asset("images/delivered.jpg")
-                            : Image.asset("images/state.jpg"),
+                        orderStatus != "ended"
+                            ? Image.asset("images/packing.png")
+                            : Image.asset("images/delivered.jpg"),
                         const Divider(thickness: 1,),
                         FutureBuilder<DocumentSnapshot>(
                           future: FirebaseFirestore.instance
                               .collection("users")
-                              .doc(sharedPreferences!.getString("uid"))
+                              .doc(orderByUser)
                               .collection("userAddress")
                               .doc(dataMap["addressID"])
                               .get(),
@@ -107,6 +129,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                                     model: Address.fromJson(
                                       snapshot.data!.data()! as Map<String, dynamic>
                                     ),
+                              orderStatus: orderStatus,
+                              orderId: widget.orderID,
+                              sellerId: sellerId,
+                              orderByUser: orderByUser,
                                   )
                                 : Center(child: circularProgress(),);
                           },

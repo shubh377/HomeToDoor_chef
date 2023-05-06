@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hometodoor_user/assistantMethods/cart_item_counter.dart';
-import 'package:hometodoor_user/global/global.dart';
-import 'package:hometodoor_user/splashScreen/splash_screen.dart';
-import 'package:provider/provider.dart';
+
+import '../global/global.dart';
+
 
 seperateOrderItemIDs(orderIDs){
   List<String> seperateItemIDsList = [], defaultItemList = [];
@@ -56,27 +54,6 @@ seperateItemIDs(){
 
 }
 
-addItemToCart(String? foodItemId, BuildContext context, int itemCounter){
-
-  List<String>? tempList = sharedPreferences!.getStringList("userCart");
-  tempList!.add(foodItemId! + ":$itemCounter");
-
-  FirebaseFirestore.instance.collection("users").doc(firebaseAuth.currentUser!.uid).update({
-    "userCart":tempList,
-  }).then((value){
-
-    Fluttertoast.showToast(msg: "Item added successfully!");
-    sharedPreferences!.setStringList("userCart", tempList);
-
-    //update the badge
-    Provider.of<CartItemCounter>(context, listen: false).displayCartListItemNumber();
-  });
-
-
-
-
-
-}
 seperateOrderItemQuantities(orderIDs){
   List<String> seperateItemQuantityList = [];
   List<String> defaultItemList = [];
@@ -143,8 +120,7 @@ clearCartNow(context){
   update({"userCart" : emptyList}).then((value)
       {
         sharedPreferences!.setStringList("userCart", emptyList!);
-        Provider.of<CartItemCounter>(context, listen: false).displayCartListItemNumber();
-        
+
 
       });
 }
